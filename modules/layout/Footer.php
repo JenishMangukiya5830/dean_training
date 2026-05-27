@@ -118,10 +118,9 @@ Class Footer implements Layout
     </div>
     <div class='row'>
         <div class='col-md-4'>
-            <a href='/terms/'>Terms of Service</a> | 
-            <a href='/terms/reed'>REED T&C</a> | 
-            <a href='/privacy/'>Privacy</a> |
-            <a href='/refund/'>Refund policy</a>
+            <a href='" . PUBLIC_BASE . "/terms/'>Terms of Service</a> | 
+            <a href='" . PUBLIC_BASE . "/privacy/'>Privacy</a> |
+            <a href='" . PUBLIC_BASE . "/refund/'>Refund policy</a>
         </div>
         <div class='col-md-8'>
             <p class='muted text-right'>©" . Date('Y') . " Dean Training. All rights reserved</p>
