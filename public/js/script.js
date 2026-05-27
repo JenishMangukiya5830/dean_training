@@ -1,6 +1,14 @@
 $("img").unveil(200);
 $.validate();
 
+// Non-refundable payment notice — only on book-now page
+if ($('#nonRefundableModal').length) {
+    $('#nonRefundableModal').modal('show');
+    $('#nonRefundableConfirm').on('click', function () {
+        $('#nonRefundableModal').modal('hide');
+    });
+}
+
 function loadtocourse() {
     if ($("#course_select").val() == 'Select Course') {
         return alert("Please select the course to find the details.");
