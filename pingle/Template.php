@@ -103,6 +103,8 @@ Class Template
 
     function Render($element = null, $js = null)
     {
+        // Buffer all output so we can rewrite root-relative asset paths
+        ob_start();
 
         //get the header
         if (is_null($this->Header)) {
@@ -179,8 +181,27 @@ Class Template
     tickInterval: 1
 });";
 
+        echo "<script>var BASE_URL = '" . PUBLIC_BASE . "'; var SITE_URL = '" . rtrim(str_replace('/public', '', PUBLIC_BASE), '/') . "';</script>";
         echo "<script>{$fullJs}</script>";
         echo "<script>{$js}</script>";
+
+        // Rewrite all root-relative asset paths (src='/img/...' data-src="/img/..." etc.)
+        // to use the correct PUBLIC_BASE so it works in localhost subfolders
+        $html = ob_get_clean();
+        $base  = PUBLIC_BASE;
+        // Rewrite src/href/data-src attributes
+        $html  = preg_replace(
+            '#((?:src|data-src|href)=["\'])/(img|v2|upload|sp|external|js|css)/#',
+            '$1' . $base . '/$2/',
+            $html
+        );
+        // Rewrite CSS url() references in inline styles
+        $html = preg_replace(
+            '#(url\(["\']?)/(img|v2|upload|sp|external|js|css)/#',
+            '$1' . $base . '/$2/',
+            $html
+        );
+        echo $html;
     }
 
 
@@ -211,8 +232,7 @@ Class Template
             }
         }
         $this->Header = str_replace("%cssfiles%", file_get_contents(ROOT . DS . "modules" . DS . "application" . DS . "views" . DS . "cssfiles" . '.phtml') . $customcss, $this->Header);
-        $this->Header = str_replace("%BASEURL%", $this->Helper->siteUrl() . "/public", $this->Header
-        );
+        $this->Header = str_replace("%BASEURL%", PUBLIC_BASE, $this->Header);
     }
 
     private function footerJavascript()
@@ -227,7 +247,7 @@ Class Template
             }
         }
         $this->Footer = str_replace("%jsfiles%", file_get_contents(ROOT . DS . "modules" . DS . "application" . DS . "views" . DS . "jsfiles" . '.phtml') . $customjs, $this->Footer);
-        $this->Footer = str_replace("%BASEURL%", $this->Helper->siteUrl() . "/public", $this->Footer);
+        $this->Footer = str_replace("%BASEURL%", PUBLIC_BASE, $this->Footer);
     }
 
     private function headerFlag()

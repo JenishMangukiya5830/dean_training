@@ -5,7 +5,7 @@ function loadtocourse() {
     if ($("#course_select").val() == 'Select Course') {
         return alert("Please select the course to find the details.");
     }
-    window.location = "/course/detail/course/" + $("#course_select").val();
+    window.location = SITE_URL + "/course/detail/course/" + $("#course_select").val();
 }
 
 $('.btn-view-more').on('click', function (e) {

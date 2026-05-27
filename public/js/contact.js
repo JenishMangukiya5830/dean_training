@@ -14,7 +14,7 @@ $('#contactForm').submit(function () {
             .then(function (token) {
                 // add token to form
                 $('#contactForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
-                $.post("/contact/request", {
+                $.post(SITE_URL + "/contact/request", {
                     name: name,
                     email: email,
                     number: number,

@@ -28,8 +28,8 @@ Class SlideShow implements Layout {
             </div>
         </div>
         </div>
-        <style>#main_image{ background: url(/v2/img/silkscreen.svg),
-        url(/v2/img/" . $image[array_rand($image, 1)] . ");}</style>";
+        <style>#main_image{ background: url(" . PUBLIC_BASE . "/v2/img/silkscreen.svg),
+        url(" . PUBLIC_BASE . "/v2/img/" . $image[array_rand($image, 1)] . ");}</style>";
         return $data;
     }
 

@@ -11,7 +11,7 @@ function get_course_date() {
     }
 
     if (courseselected == '32') {
-        $("#imp-message").html("This booking is for theory and practical to book theory only <a href='/book-now/course/course/31/'>click here</a>");
+        $("#imp-message").html("This booking is for theory and practical to book theory only <a href='" + SITE_URL + "/book-now/course/course/31/'>click here</a>");
         $("#imp-message").slideDown();
     }
 

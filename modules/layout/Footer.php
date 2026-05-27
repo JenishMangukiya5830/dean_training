@@ -51,17 +51,17 @@ Class Footer implements Layout
                 </li>
                 <li>
                     <h4>Map</h4>
-                    <img src='/img/map.jpg' />
+                    <img src='" . PUBLIC_BASE . "/img/map.jpg' />
                     <h4>Directions</h4>
                     <div class='text-center'>
                         <a href='https://www.google.co.uk/maps/preview#!data=!1m4!1m3!1d1926!2d-0.2877112!3d51.5360554!4m36!3m16!1m0!1m5!1sRays+House%2C+N+Circular+Rd%2C+London+NW10+7XP!2s0x48761221e4b27701%3A0x8fde9d52dc21007d!3m2!3d51.5360554!4d-0.2877112!3m8!1m3!1d30809!2d-0.254258!3d51.5449983!3m2!1i1366!2i596!4f13.1!5m16!2m15!1m14!1s0x48761221e4b27701%3A0x8fde9d52dc21007d!2sRays+House+North+Circular+Road+London+NW10%C2%A07XP!3m8!1m3!1d30809!2d-0.254258!3d51.5449983!3m2!1i1366!2i596!4f13.1!4m2!3d51.5360554!4d-0.2877112!7m1!3b1&amp;fid=0' target='_blank'>
-                            <img src='/img/car1.png' height='50px' width='50px'>
+                            <img src='" . PUBLIC_BASE . "/img/car1.png' height='50px' width='50px'>
                         </a>
                         <a href='https://www.google.co.uk/maps/preview#!data=!1m4!1m3!1d3852!2d-0.2874752!3d51.5363624!4m20!3m17!1m0!1m5!1sRays+House%2C+N+Circular+Rd%2C+London+NW10+7XP!2s0x48761221e4b27701%3A0x8fde9d52dc21007d!3m2!3d51.5360554!4d-0.2877112!2e3!3m8!1m3!1d1926!2d-0.2877112!3d51.5360554!3m2!1i1366!2i596!4f13.1!7m1!3b1&amp;fid=0' target='_blank'>
-                            <img src='/img/train1.png' height='50px' width='50px'>
+                            <img src='" . PUBLIC_BASE . "/img/train1.png' height='50px' width='50px'>
                         </a>
                         <a href='https://www.google.co.uk/maps/preview#!data=!1m4!1m3!1d3852!2d-0.2874752!3d51.5363624!4m20!3m17!1m0!1m5!1sRays+House%2C+N+Circular+Rd%2C+London+NW10+7XP!2s0x48761221e4b27701%3A0x8fde9d52dc21007d!3m2!3d51.5360554!4d-0.2877112!2e2!3m8!1m3!1d3852!2d-0.2874752!3d51.5363624!3m2!1i1366!2i596!4f13.1!7m1!3b1&amp;fid=0' target='_blank'>
-                            <img src='/img/walk1.png' height='50px' width='50px'>
+                            <img src='" . PUBLIC_BASE . "/img/walk1.png' height='50px' width='50px'>
                         </a>
                     </div>
                 </li>                
@@ -77,7 +77,7 @@ Class Footer implements Layout
             }
             </script><script type='text/javascript' src='//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'></script>
             </p>
-            <img src='/img/flags.png' style='width: 100%;'/>
+            <img src='" . PUBLIC_BASE . "/img/flags.png' style='width: 100%;'/>
             </ul>
             <ul class='unstyled'>
                 <li>Dean Training<li>
@@ -112,14 +112,14 @@ Class Footer implements Layout
                         &nbsp;&nbsp;<a href='https://www.instagram.com/deantraining/' target='_blank'><i class='fa fa-instagram fa-5x'></i></a>
                     </div>
                 </li>
-                <li><h4>We Support Cause</h4><img src='/img/support_cause.jpg' /></li>                   
+                <li><h4>We Support Cause</h4><img src='" . PUBLIC_BASE . "/img/support_cause.jpg' /></li>                   
             </ul>
         </div>        	            				
     </div>
     <div class='row'>
         <div class='col-md-4'>
-            <a href='/terms/'>Terms of Service</a> |  
-            <a href='/terms/reed'>REED T&C</a> |  
+            <a href='/terms/'>Terms of Service</a> | 
+            <a href='/terms/reed'>REED T&C</a> | 
             <a href='/privacy/'>Privacy</a> |
             <a href='/refund/'>Refund policy</a>
         </div>

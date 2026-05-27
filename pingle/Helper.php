@@ -51,14 +51,11 @@ class Helper {
 
     //get the website url
     function siteUrl() {
-        if (isset($_SERVER['HTTPS'])) {              // Get protocol HTTP/HTTPS
-            $protocol = 'https';
-        } else {
-            $protocol = 'http';
-        }
-        $host = $_SERVER['HTTP_HOST'];               // Get  www.domain.com
-        $currentUrl = $protocol . '://' . $host;     // Adding all
-        return $currentUrl;
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        // Strip /public/index.php (or /public/) from SCRIPT_NAME to get the app base path
+        $base = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'])), '/\\');
+        return $protocol . '://' . $host . $base;
     }
 
     //print the data in jason format

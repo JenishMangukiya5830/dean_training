@@ -1,11 +1,8 @@
 Rlimitmem max 
 RewriteEngine On
- RewriteCond %{ENV:HTTPS} !=on
- RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 <IfModule mod_rewrite.c>
-RewriteBase /
-RewriteRule ^.+?/((img|css|js|otf|eot|svg|ttf|woff|gif)/.+)$ /$1 [L]
+RewriteBase /DeanTraining/public/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php?url=$1 [PT,L]
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </IfModule>

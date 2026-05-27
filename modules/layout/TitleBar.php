@@ -20,8 +20,8 @@ Class TitleBar implements Layout {
         <h1>{$option['title']}</h1>            
         </div>
         </div>
-        <style>#main_image{ background: url(/img/silkscreen.svg),
-        url('" . $image[array_rand($image, 1)] . "');}</style><br/>";
+        <style>#main_image{ background: url(" . PUBLIC_BASE . "/img/silkscreen.svg),
+        url(" . PUBLIC_BASE . "/img/" . $image[array_rand($image, 1)] . ");}</style><br/>";
         return $data;
     }
 
