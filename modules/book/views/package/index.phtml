@@ -1,0 +1,107 @@
+<?php
+$navbar = $element['navbar'];
+$footer = $element['footer'];
+$location_drop = $element['location_drop'];
+$package_drop = $element['package_drop'];
+$titlebar = $element['titlebar'];
+$package_selected = $element['package_selected'];
+?>
+
+<?php
+echo $navbar;
+echo $titlebar;
+?>
+<div class="row">
+    <div class="col-md-8">
+        <form method="post" action="http://isecuredirect.com/package/onlinebooking/">
+            <h5><span class="text-danger">*</span> Required</h5>
+
+            <div class="form-group">
+                <label for="courses">Please Select The Booking Course <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                    <select onchange="get_course_date();" name="package" id="package" class="form-control selectpicker" data-live-search='true' data-validation="required">
+                        <option value="">Select Package</option>
+                        <?= $package_drop; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="venue">Please Select The Venue <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                    <select onchange="get_course_date();" name="venue" id="venue" class="form-control selectpicker" data-live-search='true' data-validation="required">
+                        <option value="">Select Venue</option>                        
+                        <?= $location_drop; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div id="datesfoundbooking">
+
+            </div>
+
+            <br/>
+            <h4>YOUR DETAILS</h4><hr/>                
+            <div class="form-group">
+                <label for="firstname">First Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control" id="firstname" name="firstname" data-validation="length" data-validation-length="3-255"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="midname">Middle Name</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control" id="midname" name="midname" data-validation="length" data-validation-length="3-255" data-validation-optional="true"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control" id="lastname" name="lastname" data-validation="length" data-validation-length="3-255"/>
+                </div>
+            </div>                
+            <div class="form-group">
+                <label for="mobile">Mobile <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                    <input type="text" class="form-control" id="mobile" name="mobile" data-validation="length" data-validation-length="3-255"/>
+                </div>
+            </div>                
+            <div class="form-group">
+                <label for="email">Email Address <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                    <input type="text" class="form-control" id="email" name="email" data-validation="email"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="refer">Refer</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                    <select name="refer" id="refer" class="form-control selectpicker" required=""><option value='' selected="">Select</option><option value='2'>Facebook</option><option value='3'>Friend</option><option value='1'>Google</option><option value='4'>Other</option></select>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success btn-lg" data-loading-text="Loading..."/> <i class="fa fa fa-money"></i> BOOK NOW</button>
+            </div>
+            <br/>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <center>            
+            <img src="/v2/img/secure-payment.png" width="200"/><br/>
+            <img src="/v2/img/paypal.jpg" width="200"/><br/>
+        </center>
+    </div>   
+    <?php echo "<input type='hidden' id='selected_package_id' value='$package_selected' />"; ?>
+
+</div>
+<?php
+echo $footer;

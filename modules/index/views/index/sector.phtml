@@ -1,0 +1,387 @@
+<?php
+$navbar = $element['navbar'];
+$footer = $element['footer'];
+$course_data = $element['course_data'];
+?>
+<?php
+echo $navbar;
+?>
+    <div class="row" id="tiles">
+        <?php
+
+
+        $newOrder = [
+            1 => [
+                2 => 1,
+                4 => 2,
+				45 => 3,
+                1 => 4,
+                29 => 5,
+                43 => 6,
+                5 => 7,
+                8 => 8,
+                6 => 9,
+                7 => 10,
+                27 => 11,
+                12 => 12,
+                13 => 13,
+                17 => 14,
+                9 => 15,
+                18 => 16,
+                19 => 17,
+                21 => 18,
+            ],
+            2 => [
+                21 => 1,
+                9 => 2,
+                39 => 3,
+                40 => 4,
+                42 => 5,
+                12 => 6,
+                27 => 7,
+                18 => 8,
+                19 => 9,
+                22 => 10,
+            ],
+            3 => [
+                20 => 1,
+                51 => 2,
+                52 => 3,
+                12 => 4,
+                27 => 5,
+                18 => 6,
+                19 => 7,
+                22 => 8,
+                2 => 9,
+            ],
+            4 => [
+                10 => 1,
+                11 => 2,
+                44 => 3,
+                45 => 4,
+                46 => 5,
+                47 => 6,
+                48 => 7,
+                49 => 8,
+                50 => 9,
+                51 => 10,
+                52 => 11,
+                53 => 12
+            ]
+        ];
+
+        $coursesData = [];
+        foreach ($course_data as $count => $course) {
+            if (!in_array($element['sector'], explode(",", $course['sector']))) {
+                continue;
+            }
+            $order = 0;
+            if(isset($newOrder[$element['sector']][$course['course_id']])){
+                $order = $newOrder[$element['sector']][$course['course_id']];
+            }
+            $coursesData[$order] = $course;
+        }
+
+        ksort($coursesData);
+
+        foreach ($coursesData as $count => $course) {
+            if (!in_array($element['sector'], explode(",", $course['sector']))) {
+                continue;
+            }
+            $course_link = $this->Helper->generateRoute('course', 'index', 'detail', array('course' => $course['slag']));
+            $book_link = $this->Helper->generateRoute('book', 'book', 'course', array('course' => $course['linked_course_id']));
+
+            $oldPrice = number_format(($course['price'] * 0.10) + $course['price'], 0);
+            echo "<div class='col-md-4 col-sm-6 col-xs-12 tile'>";
+            echo "<a href='$course_link' class='image_holder'><img src='/img/loading.gif' data-src='{$course['image']}' /></a>";
+            echo "<div class='info'>";
+
+            if (PROMOTION_RUNNING) {
+                echo "<div class='col-md-8 col-xs-8'>
+                <p class='name'>{$course['title']}</p>
+                <p class='date'>Next Date<span>{$course['next_course_date']}</span></p>
+                <span class='discount-timer' id='discount-timer-{$count}'></span>
+                <span class='old-price'>£{$oldPrice}</span>
+                <span class='price'>£{$course['price']} <span class='discount-info'> 10% off</span></span>                               
+            </div>
+            <div class='col-md-4 col-xs-4'>                   
+                <a href='$book_link' class='booking'>Book Now</a>
+            </div>";
+            } else {
+                echo "<div class='col-md-8 col-xs-8'>
+                <p class='name'>{$course['title']}</p>
+                <p class='date'>Next Date<span>{$course['next_course_date']}</span></p>
+                <span class='price'>£{$course['price']}</span>
+            </div>
+            <div class='col-md-4 col-xs-4'>                   
+                <a href='$book_link' class='booking'>Book Now</a>
+            </div>";
+                echo "<style>
+#tiles .tile .price {
+    position: relative !important;
+    background-color: #F00 !important;
+    top: -125px !important;
+    color: #FFF !important;
+    text-align: right !important;
+    padding: 10px !important;
+    float: left !important;
+    border-top-right-radius: 8px !important;
+    margin-bottom: -110px !important;
+    left: -50px !important;
+}
+</style>";
+            }
+
+            echo "</div>";
+            echo "</div>";
+        }
+        ?>
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a href="<?= $this->Helper->generateRoute('book', 'groupbooking', 'index'); ?>" class="image_holder">
+                <img src='/img/loading.gif' data-src="/img/inhousetraining.png"/>
+            </a>
+            <div class="info">
+                <div class="col-md-8 col-xs-8">
+                    <p class="name">In House Training / Group Booking</p>
+                    <p class="date">Any time any day any location</p>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="<?= $this->Helper->generateRoute('book', 'groupbooking', 'index'); ?>" class="booking">Book
+                        Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a href="<?= $this->Helper->generateRoute('index', 'servicepersonnel', 'index'); ?>" class="image_holder">
+                <img src='/img/loading.gif' data-src="/img/exarmy.jpg"/>
+            </a>
+            <div class="info">
+                <div class="col-md-8 col-xs-8">
+                    <p class="name">Service Personnel Courses</p>
+                    <p class="date">&nbsp;</p>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="<?= $this->Helper->generateRoute('index', 'servicepersonnel', 'index'); ?>"
+                       class="booking">View</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile" id="packages">
+            <a href="<?= $this->Helper->generateRoute('course', 'packages', 'index'); ?>" class="image_holder">
+                <img src='/img/package_deals.png' class='package p1'/>
+            </a>
+            <div class="info">
+                <div class="col-md-8 col-xs-8">
+                    <p class="name">Package Deals</p>
+                    <p class="date">Save Money And Learn More</p>
+                    <span class="price">From £99</span>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="<?= $this->Helper->generateRoute('course', 'packages', 'index'); ?>" class="booking">View
+                        Now</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a class="image_holder no-click-cursor">
+                <img src='/img/loading.gif' data-src="/img/ourclients.png"/>
+            </a>
+            <div class="info">
+                <div class="col-md-12 col-xs-12">
+                    <p class="name">Few of our Clients</p>
+                    <p class="date">Securitas, Unitrust, Alpha1, KGN Security, E1security...</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a href="<?= $this->Helper->generateRoute('contact', 'contact', 'index'); ?>" class="image_holder">
+                <img src='/img/loading.gif' data-src="/img/contactus_2.jpg"/>
+            </a>
+            <div class="info">
+                <div class="col-md-8 col-xs-8">
+                    <p class="name">Contact Us</p>
+                    <p class="date">For Amazing Deals</p>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="<?= $this->Helper->generateRoute('contact', 'contact', 'index'); ?>" class="booking">Contact
+                        Us</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a class="image_holder no-click-cursor">
+                <img src='/img/loading.gif' data-src="/img/testimonials.png"/>
+            </a>
+            <div class="info">
+                <div class="col-md-12 col-xs-12">
+                    <p class="name">Testimonials</p>
+                    <p class="date">Some words from our students</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a href="<?= $this->Helper->generateRoute('about', 'about', 'index'); ?>" class="image_holder">
+                <img src='/img/loading.gif' data-src="/img/accreditations.png"/>
+            </a>
+            <div class="info">
+                <div class="col-md-12 col-xs-12">
+                    <p class="name">Few of our Accreditations</p>
+                    <p class="date">HABC, SIA (approved training provider), ELCAS ... </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12 tile ">
+            <a href='https://www.google.co.uk/maps/dir//Rays+House,+N+Circular+Rd,+London+NW10+7XP/@51.5360858,-0.3577042,12z/data=!3m1!4b1!4m8!4m7!1m0!1m5!1m1!1s0x48761221e4b27701:0x8fde9d52dc21007d!2m2!1d-0.2876646!2d51.5359999'
+               target="_blank" class="image_holder no-click-cursor">
+                <img src='/img/loading.gif' data-src="/img/london.png"/>
+            </a>
+            <div class="info">
+                <div class="col-md-8 col-xs-8">
+                    <p class="name">London</p>
+                    <p class="date">Rays House, North Circular Road, London</p>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <a href="https://www.google.co.uk/maps/dir//Rays+House,+N+Circular+Rd,+London+NW10+7XP/@51.5360858,-0.3577042,12z/data=!3m1!4b1!4m8!4m7!1m0!1m5!1m1!1s0x48761221e4b27701:0x8fde9d52dc21007d!2m2!1d-0.2876646!2d51.5359999"
+                       class="booking" target="_blank">Get Directions</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="covid19Notice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            onclick="covoidNoticeClose();"><span
+                                aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <center class="red-text">COVID 19 Admission Notice</center>
+                    </h4>
+                </div>
+                <div class="modal-body row">
+                    <div class="col-md-12">
+                        <h4 class="red-text">Respect social distancing</h4>
+                        <ul style="list-style-type: circle;" class="col-md-12">
+                            <li>New signage placed throughout the office and classrooms providing clear guidance on
+                                social
+                                distancing and hygiene to delegates and clients.
+                            </li>
+                            <li>Barriers and markings have been placed throughout the training centre to indicate
+                                2-metre
+                                social
+                                distancing protocols as well as entry and exit routes to minimise contact.
+                            </li>
+                            <li>Our reception desk has been upgraded with a protective barrier/screen to ensure a
+                                limitation
+                                in
+                                contact.
+                            </li>
+                            <li>Access to our main office will be restricted to 1 delegate at a time and will also be
+                                marked
+                                on
+                                the
+                                floor.
+                            </li>
+                            <li>All non-essential staff will continue to work from home where possible.</li>
+                            <li>We will be operating courses with limited numbers to ensure social distancing.</li>
+                        </ul>
+
+                        <h4 class="red-text">Personal Protective Equipment and other equipment</h4>
+                        <ul style="list-style-type: circle;" class="col-md-12">
+                            <li>All staff working at the training centre will wear the correct PPE when engaging with
+                                delegates.
+                            </li>
+                            <li>Face masks will be provided to delegates only if necessary and if available.
+                            </li>
+                            <li>Delegates will be provided with stationary and water but advise you to bring your own
+                                lunch to help reduce unnecessary contact or travel.
+                            </li>
+                        </ul>
+
+                        <h4 class="red-text">Keeping sanitized</h4>
+                        <ul style="list-style-type: circle;" class="col-md-12">
+                            <li>Further encouragement to increase the frequency of hand washing and surface cleaning.
+                            </li>
+                            <li>Hand sanitisers are placed in the appropriate locations around the centre and all
+                                delegates will be
+                                encouraged to use them each time they leave or enter the classrooms.
+                            </li>
+                            <li>Our training centre is disinfected continuously throughout the day (all doors, classroom
+                                desks,
+                                computers, keyboards etc.)
+                            </li>
+                            <li>Building management have increased cleaning frequency in corridors and toilet
+                                facilities.
+                            </li>
+                            <li>Fogging, electrospraying and touch point cleaning will be conducted every evening.
+                            </li>
+                        </ul>
+
+                        <h4 class="red-text">Additional measures put into place</h4>
+                        <ul style="list-style-type: circle;" class="col-md-12">
+                            <li>Firm risk assessments have been carried out with thorough risk management strategies put
+                                into
+                                place.
+                            </li>
+                            <li>All activities and processes where possible will be carried out electronically as a
+                                priority.
+                            </li>
+                            <li>All individuals will be screened when entering the premises with no-contact
+                                thermometers.
+                            </li>
+                            <li>Break times across classes will be staggered and shortened to avoid any overlap and any
+                                unnecessary contact/risk.
+                            </li>
+                            <li>Any learners that feel unwell will need to inform Dean Training Management as soon as
+                                possible.
+                                Delegates will then be moved onto specified course dates which will only be chosen by
+                                the
+                                bookings team once they feel better and no earlier than the 14-day guided quarantine
+                                period.
+                            </li>
+                            <li>Dean Training have several qualified First Aiders on hand, who have all been briefed on
+                                the ‘First
+                                Aider Guidance Note during Coronavirus’ to support anyone who may have become unwell
+                                during
+                                the time with us.
+                            </li>
+                            <li>The number of delegates booked for an Dean Training courses will be limited to only 12
+                                at a time.
+                            </li>
+                        </ul>
+
+                        <h4 class="red-text">Most importantly</h4>
+                        <ul style="list-style-type: circle;" class="col-md-12">
+                            <li>Failure to adhere to the enforced rules will result in removal from the classroom or
+                                office. Additional
+                                charges will apply for rebooking.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="covoidNoticeClose();">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php
+echo $footer;

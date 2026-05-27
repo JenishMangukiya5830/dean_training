@@ -1,0 +1,39 @@
+<?php
+$navbar = $element['navbar'];
+$footer = $element['footer'];
+$course_data = $element['course_data'];
+?>
+<?php
+echo $navbar;
+?>
+<div class="row" id="tiles">
+    <?php
+    foreach ($course_data as $course) {
+        if (!in_array($course['course_id'], array(13, 16, 27))) {
+            continue;
+        }
+        $course_link = $this->Helper->generateRoute('course', 'index', 'detail', array('course' => $course['slag']));
+        $book_link = $this->Helper->generateRoute('book', 'book', 'course', array('course' => $course['linked_course_id']));
+        echo "<div class='col-md-4 col-sm-6 col-xs-12 tile'>";
+        echo "<a href='$course_link' class='image_holder'><img src='/img/loading.gif' data-src='{$course['image']}' /></a>";
+        echo "<div class='info'>";
+        echo "<div class='col-md-8 col-xs-8'>
+                <p class='name'>{$course['title']}</p>
+                <p class='date'>Next Date<span>{$course['next_course_date']}</span></p>
+                <span class='price'>£{$course['price']}</span>
+            </div>
+            <div class='col-md-4 col-xs-4'>                   
+                <a href='$book_link' class='booking'>Book Now</a>
+            </div>";
+        echo "</div>";
+        echo "</div>";
+    }
+    ?>
+
+
+
+
+</div>
+
+<?php
+echo $footer;

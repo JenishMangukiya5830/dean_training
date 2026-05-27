@@ -1,0 +1,55 @@
+<?php
+$navbar = $element['navbar'];
+$footer = $element['footer'];
+$titlebar = $element['titlebar'];
+?>
+<?php
+echo $navbar;
+echo $titlebar;
+?>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">        
+        <form id='contactForm' method="post" action="<?= $this->Helper->generateRoute('contact', 'contact', 'request') ?>">
+            <h5><span class="text-danger">*</span> Required</h5>
+
+            <div class="form-group">
+                <label for="name">Full Name <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control" id="name" name="name" data-validation="length" data-validation-length="3-255"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                    <input type="text" class="form-control" id="email" name="email" data-validation="email"/>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="number">Mobile Number <span class="text-danger">*</span></label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                    <input type="text" class="form-control" id="number" name="number" data-validation="length" data-validation-length="3-255"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message <span class="text-danger">*</span></label>
+                <textarea name="message" id="message" class="form-control" rows="5"></textarea>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success btn-lg" data-loading-text="Loading..."/>Submit</button>
+            </div>
+
+            <br/>
+
+        </form>
+    </div>
+</div>
+<?php
+echo $footer;

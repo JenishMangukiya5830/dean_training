@@ -1,0 +1,23 @@
+.package{
+    background-position: center bottom, left top;
+    background-repeat: no-repeat;
+    background-position: 240px 0px, -240px 0px, left top !important;
+    background-size: 100% 360px, 100% 360px !important;
+
+}
+.p1{	
+    background-image: 
+        url(http://deantraining.co.uk/v2/img/first_aid_2.jpg),
+        url(http://deantraining.co.uk/v2/img/close_protection.png);
+}
+
+.p2{	
+    background-image: 
+        url(http://deantraining.co.uk/v2/img/cctv.png),
+        url(http://deantraining.co.uk/v2/img/door_supervisor.png);
+}
+.p3{
+    background-image: 
+        url(http://deantraining.co.uk/v2/img/handcuff.jpg),
+        url(http://deantraining.co.uk/v2/img/firearms.jpg);
+}

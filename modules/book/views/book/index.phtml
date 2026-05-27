@@ -1,0 +1,159 @@
+<?php
+$navbar = $element['navbar'];
+$footer = $element['footer'];
+$location_drop = $element['location_drop'];
+$course_drop = $element['course_drop'];
+$titlebar = $element['titlebar'];
+$course_date_data = $element['course_date_data'];
+$course_id = $element['course_id'];
+$courseInfo = $element['courseInfo'];
+?>
+
+<?php
+echo $navbar;
+echo $titlebar;
+?>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <input type="hidden" id="promotionStatus"
+                   value="<?= PROMOTION_RUNNING ? 1 : 0; ?>"/>
+
+            <form method="post" action="https://isecuredirect.com/booking/onlinebooking/" id="bookingForm">
+
+                <h5><span class="text-danger">*</span> Required</h5>
+
+                <div class="form-group">
+                    <label for="courses">Please Select The Booking Course <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-book"></i></span>
+                        <select onchange="get_course_date();" name="courses" id="courses"
+                                class="form-control selectpicker" data-live-search='true' data-validation="required">
+                            <option value="">Select Course</option>
+                            <?= $course_drop; ?>
+                            <option value='47'>Testing Course</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="venue">Please Select The Venue <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-location-arrow"></i></span>
+                        <select onchange="get_course_date();" name="venue" id="venue" class="form-control selectpicker"
+                                data-live-search='true' data-validation="required">
+                            <option value="">Select Venue</option>
+                            <?= $location_drop; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <p id="imp-message" class="alert alert-warning"></p>
+
+                <div id="datesfoundbooking">
+
+                </div>
+
+                <br/>
+                <h4>YOUR DETAILS</h4>
+                <hr/>
+                <div class="form-group">
+                    <label for="firstname">First Name <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                        <input type="text" class="form-control" id="firstname" name="firstname" data-validation="length"
+                               data-validation-length="3-255"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="midname">Middle Name</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                        <input type="text" class="form-control" id="midname" name="midname" data-validation="length"
+                               data-validation-length="3-255" data-validation-optional="true"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                        <input type="text" class="form-control" id="lastname" name="lastname" data-validation="length"
+                               data-validation-length="3-255"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="dob">Date of Birth</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                        <input type="text" class="form-control" id="dob" name="dob" data-validation="date"
+                               data-validation-format="dd/mm/yyyy" data-validation-optional="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                        <input type="text" class="form-control" id="mobile" name="mobile" data-validation="length"
+                               data-validation-length="3-255"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address <span class="text-danger">*</span></label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                        <input type="text" class="form-control" id="email" name="email" data-validation="email"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="refer">Refer</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                        <select name="refer" id="refer" class="form-control selectpicker">
+                            <option value='4' selected="">Select</option>
+                            <option value='2'>Facebook</option>
+                            <option value='5'>Twitter</option>
+                            <option value='3'>Friend</option>
+                            <option value='1'>Google</option>
+                            <option value='4'>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="text-center" id="submitButton">
+                    <button type="submit" class="btn btn-success btn-lg" data-loading-text="Loading..."/>
+                    <i class="fa fa fa-money"></i> BOOK NOW</button>
+                </div>
+
+                <br/>
+            </form>
+        </div>
+        <div class="col-md-12">
+            <center>
+                <?php
+                if (is_array($courseInfo)) {
+                    $course_link = $this->Helper->generateRoute('course', 'index', 'detail', array('course' => $courseInfo['slag']));
+                    echo "<a href='$course_link'>{$courseInfo['title']}<br/><img src='/v2/img/{$courseInfo['image']}' width='300'/><br/>Read More</a><br/> ";
+                }
+                ?>
+                <img src="/v2/img/secure-payment.png" width="200"/>
+                <img src="/v2/img/paypal.jpg" width="200"/><br/>
+            </center>
+        </div>
+        <?php
+        if ($course_id != '') {
+            echo "<input type='hidden' id='selected_course_id' value='$course_id' />";
+        }
+        if (is_array($course_date_data)) {
+            echo "<input type='hidden' id='selected_course_id' value='{$course_date_data['course_date_data']['linked_course_id']}' />";
+            echo "<input type='hidden' id='selected_date_id' value='{$course_date_data['date_id']}' />";
+        } else {
+            echo "<input type='hidden' id='selected_course_id' value='' />";
+            echo "<input type='hidden' id='selected_date_id' value='' />";
+        }
+        ?>
+    </div>
+<?php
+echo $footer;
+

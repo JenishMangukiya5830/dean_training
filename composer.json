@@ -1,0 +1,16 @@
+{
+    "name": "vendor/deantraining-co-uk",
+    "description": "Description of project Deantraining.co.uk.",
+    "authors": [
+        {
+            "name": "faizrasool",
+            "email": "faiz708@gmail.com"
+        }
+    ],
+    "config": {
+        "vendor-dir": "pingle/external"
+    },
+    "require": {
+        "facebook/graph-sdk" : "5.5.0"
+    }
+}

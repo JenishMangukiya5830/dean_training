@@ -1,0 +1,289 @@
+<?php
+$navbar = $element['navbar'];
+$data = $element['data'];
+$realated_course = $element['realated_course'];
+$footer = $element['footer'];
+$testimonial = $element['testimonial'];
+$titlebar = $element['titlebar'];
+$dates_for_other_option = $element['dates_for_other_option'];
+$discountPrice = number_format(($data['price'] * 0.10) + $data['price'], 0);
+?>
+<?php
+echo $navbar;
+?>
+    <div id='background_v2'>
+        <?php
+        echo $titlebar;
+        ?>
+        <div id='courseinfo'>
+            <div class="col-md-2" id='sidebarinfo'>
+                <div id='course_header_parent'>
+                    <div class="courseheader">
+                        <div class="circle">
+                            <div class="header"><i class='fa fa-calendar'></i> Next Date</div>
+                            <div class="info"><?= $data['next_course_date']; ?></div>
+                        </div>
+                        <div class="circle">
+                            <div class="header"><i class='fa fa-gbp'></i> Fee</div>
+                            <div class="info">from £<?= $data['price']; ?>
+                                <?php
+                                if (PROMOTION_RUNNING) {
+                                    ?>
+                                    <span class="price-cut">£<?= $discountPrice; ?></span>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="circle">
+                            <div class="header"><i class='fa fa-clock-o'></i> Timings</div>
+                            <div class="info"><?= $data['timings']; ?></div>
+                        </div>
+                        <div class="circle">
+                            <div class="header"><i class='fa fa-calendar'></i> Duration</div>
+                            <div class="info"><?= $data['duration']; ?></div>
+                        </div>
+                        <div class="circle">
+                            <div class="header"><i class='fa fa-exclamation-circle'></i> Minimum Age</div>
+                            <div class="info"><?= $data['minimum_age']; ?></div>
+                        </div>
+                        <?php
+                        if ($data['in-house'] != '') {
+                            ?>
+                            <div class="circle">
+                                <div class="header"><i class='fa fa-home'></i> In House Price</div>
+                                <div class="info">£ <?= $data['in-house']; ?></div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-10">
+
+                <div id="share"></div>
+
+
+                <div class="panel panel-default" id="booknow">
+                    <div class="panel-heading"><i class='fa fa-check-circle-o'></i> Course Date</div>
+                    <div class="panel-body" id='no-more-tables'>
+                        <table class='table table-striped table-condensed table-bordered'>
+                            <thead>
+                            <tr>
+                                <th width='50%'>Location</th>
+                                <th width='20%'>Date</th>
+                                <th width='20%'>Price</th>
+                                <th width='10%'>Booking</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            if (is_array($data['course_date'])) {
+                                if ($data['price']) {
+                                    $onDayPrice = (int)($data['price'] * 0.10 + $data['price']);
+                                    $data['price'] = 'On the Day Price £' . $onDayPrice . '<br/>' . '<b>Online Price £' . $data['price'] . '</b>';
+                                }
+
+                                foreach ($data['course_date'] as $date) {
+                                    $book_link = $this->Helper->generateRoute('book', 'book', 'index', array('course' => $date['course_id'], 'date_id' => $date['date_id']));
+                                    $discountText = '';
+                                    if (PROMOTION_RUNNING) {
+                                        $discountText = "<span class='price-cut'>£{$discountPrice}</span>";
+                                    }
+
+                                    echo " <tr><td data-title='Location'>{$date['location']}</td><td data-title='Date'>{$date['date']}</td><td class='text-center' data-title='Price'>{$discountText} {$data['price']}</td><td data-title='Booking' class='text-center'><a href='$book_link' class='btn btn-success btn-sm'>BOOK NOW</a></td></tr>";
+                                }
+                            }
+                            ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <?php if (!is_null($dates_for_other_option)) {
+                    $title = $dates_for_other_option['title'];
+                    unset($dates_for_other_option['title']);
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class='fa fa-check-circle-o'></i> Course Date - <?= $title; ?>
+                        </div>
+                        <div class="panel-body" id='no-more-tables'>
+                            <table class='table table-striped table-condensed table-bordered'>
+                                <thead>
+                                <tr>
+                                    <th width='50%'>Location</th>
+                                    <th width='20%'>Date</th>
+                                    <th width='20%'>Price</th>
+                                    <th width='10%'>Booking</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                if (is_array($dates_for_other_option)) {
+                                    $price = $dates_for_other_option['price'];
+                                    unset($dates_for_other_option['price']);
+                                    foreach ($dates_for_other_option as $date) {
+                                        $book_link = $this->Helper->generateRoute('book', 'book', 'index', array('course' => $date['course_id'], 'date_id' => $date['date_id']));
+
+                                        $discountText = '';
+                                        if (PROMOTION_RUNNING) {
+                                            $discountText = "<span class='price-cut'>£{$discountPrice}</span>";
+                                        }
+
+                                        echo " <tr><td data-title='Location'>{$date['location']}</td><td data-title='Date'>{$date['date']}</td><td class='text-center' data-title='Price'>{$discountText} £{$price}</td><td data-title='Booking' class='text-center'><a href='$book_link' class='btn btn-success btn-sm'>BOOK NOW</a></td></tr>";
+                                    }
+                                }
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class='fa fa-file'></i> Course Overview</div>
+                    <div class="panel-body">
+                        <?= $data['overview']; ?>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class='fa fa-file-text-o'></i> Course Details</div>
+                    <div class="panel-body">
+                        <?= $data['details']; ?>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class='fa fa-check-square'></i> Career Impact</div>
+                    <div class="panel-body">
+                        <?= $data['career_impact']; ?>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class='fa fa-check-square-o'></i> Entrance Requirement</div>
+                    <div class="panel-body">
+                        <?= $data['entrance_requirement']; ?>
+                    </div>
+                </div>
+
+
+                <?php
+                if ($data['instructor'] != '') {
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class='fa fa-user'></i> Meet Your Instructor</div>
+                        <div class="panel-body">
+                            <?= $data['instructor']; ?>
+                        </div>
+                    </div>
+                <? } ?>
+
+
+                <?php
+                if (is_array($data['gallery'])) {
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class='fa fa-picture-o'></i> Gallery</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class='list-group gallery'>
+                                    <?php
+                                    $image_count = 1;
+                                    foreach ($data['gallery'] as $image) {
+                                        echo "<div class = 'col-sm-4 col-xs-6 col-md-3 col-lg-3'>
+                                <a class = 'thumbnail fancybox' rel = 'ligthbox' href = '{$image['image']}'>
+                                <img class = 'img-responsive' alt = '' src = '{$image['thumb']}' />
+                                <div class = 'text-right'>
+                                <small class = 'text-muted'>{$image['name']}</small>
+                                </div> <!--text-right / end -->
+                                </a>
+                                </div> <!--col-6 / end -->";
+                                        if ($image_count == '4') {
+                                            echo "<div class='row'></div>";
+                                            $image_count = 0;
+                                        }
+                                        $image_count++;
+                                    }
+                                    ?>
+                                </div> <!-- row / end -->
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+                <?php
+                if ($data['faq'] != '') {
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class='fa fa-question-circle'></i> FAQ</div>
+                        <div class="panel-body">
+                            <?= $data['faq']; ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <?php
+                if ($data['mock'] != '') {
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><i class='fa fa-check-circle-o'></i> Mock Test</div>
+                        <div class="panel-body">
+                            <?= $data['mock']; ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+            </div>
+        </div>
+
+
+        <div class="row">&nbsp;</div>
+
+        <div class="row" id="tiles">
+
+            <div class="col-md-12">
+                <h3 class="text-center special-text">Related Courses</h3>
+            </div>
+            <div class="row-fluid">
+                <?php
+                if (is_array($realated_course)) {
+                    foreach ($realated_course as $count => $course) {
+                        $course_link = $this->Helper->generateRoute('course', 'index', 'detail', array('course' => $course['slag']));
+                        $book_link = $this->Helper->generateRoute('book', 'book', 'index', array('course' => $course['course_id']));
+                        $oldPrice = number_format(($course['price'] * 0.10) + $course['price'], 0);
+                        echo "<div class='col-md-4 col-sm-6 col-xs-12 tile'>";
+                        echo "<a href='$course_link' class='image_holder'><img src='/v2/img/loading.gif' data-src='{$course['image']}' /></a>";
+                        echo "<div class='info'>";
+                        echo "<div class='col-md-8 col-xs-8'>
+                <p class='name'>{$course['title']}</p>
+                <p class='date'>Next Date<span>{$course['next_course_date']}</span></p>
+               <span class='discount-timer' id='discount-timer-{$count}'></span>
+                <span class='old-price'>£{$oldPrice}</span>
+                <span class='price'>£{$course['price']} <span class='discount-info'> 10% off</span></span>
+            </div>
+            <div class='col-md-4 col-xs-4'>                   
+                <a href='$book_link' class='booking'>Book Now</a>
+            </div>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                }
+                ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="booknowfloat" class="col-md-6 col-md-offset-3 text-center">
+                <a class="btn btn-success btn-sm" href="<?= $this->Helper->generateRoute('index', 'index'); ?>"><i
+                            class="fa fa-home"></i> HOME</a>
+                <a class="btn btn-success btn-sm" href="#booknow"><i class="fa fa-star"></i> BOOK NOW</a>
+                <a class="btn btn-warning btn-sm" href="tel:00442089657818"><i class="fa fa-phone"></i> Call</a>
+                <a class="btn btn-danger btn-sm"
+                   href="<?= $this->Helper->generateRoute('contact', 'contact', 'index'); ?>"><i
+                            class="fa fa-envelope"></i> CONTACT US</a>
+            </div>
+        </div>
+    </div>
+<?php
+echo $footer;
+?>
