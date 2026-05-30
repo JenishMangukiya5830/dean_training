@@ -1,8 +1,13 @@
+// DS=6, DSR=64, CP=29, CPR=65 — require FAW/EFA qualification
+var securityCourseIds = ['6', '64', '29', '65'];
+
 function get_course_date() {
     var nameofdropdown = "";
     var packageselected = $('#package').val();
     var venueselected = $('#venue').val();
     $("#datesfoundbooking").html("");
+    $("#pkg-imp-message").hide();
+
     if (packageselected == '' || venueselected == '') {
         return;
     }
@@ -17,6 +22,25 @@ function get_course_date() {
         success: function (data)
         {
             $("#datesfoundbooking").html("");
+
+            // Check API response: if any course in this package is DS/DSR/CP/CPR, show FAW alert
+            var hasSecurityCourse = false;
+            $.each(data.courses.dates, function (key, value) {
+                if (securityCourseIds.indexOf(String(value.name)) !== -1) {
+                    hasSecurityCourse = true;
+                }
+            });
+
+            if (hasSecurityCourse) {
+                $("#pkg-imp-message")
+                    .html(
+                        "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
+                        "This package includes a security course (DS / DSR / CP / CPR). You must hold a valid " +
+                        "<strong>First Aid at Work (FAW)</strong> or <strong>Emergency First Aid at Work (EFA)</strong> " +
+                        "qualification before attending."
+                    )
+                    .slideDown();
+            }
 
             $.each(data.courses.dates, function (key, value) {
                 nameofdropdown = value.name;

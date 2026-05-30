@@ -1,5 +1,8 @@
 $("#imp-message").hide();
 
+// DS=6, DSR=64, CP=29, CPR=65 — require FAW/EFA qualification
+var securityCourseIds = ['6', '64', '29', '65'];
+
 function get_course_date() {
     $("#imp-message").hide();
     var randomid = Math.floor((Math.random() * 100) + 1);
@@ -8,6 +11,19 @@ function get_course_date() {
 
     if (courseselected == '' || venueselected == '') {
         return;
+    }
+
+    // FAW/EFA prerequisite alert for security courses
+    if (securityCourseIds.indexOf(courseselected) !== -1) {
+        $("#imp-message")
+            .removeClass('alert-warning')
+            .addClass('alert-danger')
+            .html(
+                "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
+                "You must hold a valid <strong>First Aid at Work (FAW)</strong> or " +
+                "<strong>Emergency First Aid at Work (EFA)</strong> qualification before attending this security course."
+            )
+            .slideDown();
     }
 
     if (courseselected == '32') {
