@@ -3,11 +3,54 @@ $("#imp-message").hide();
 // DS=6, DSR=64, CP=29, CPR=65 — require FAW/EFA qualification
 var securityCourseIds = ['6', '64', '29', '65'];
 
+function showPackageSuggestion(courseId) {
+    $('#package-suggestion').empty();
+    if (!courseId || courseId === '') {
+        return;
+    }
+    $('#package-suggestion').html(
+        '<p class="text-muted"><i class="fa fa-spinner fa-spin"></i> Loading...</p>'
+    );
+    $.ajax({
+        type: 'GET',
+        url: '/DeanTraining/sync/getpackagesbycourse/course_id/' + courseId,
+        dataType: 'json',
+        success: function (packages) {
+            $('#package-suggestion').empty();
+            if (!packages || packages.length === 0) {
+                return;
+            }
+            var courseName = $('#courses option:selected').text();
+            var html = '<div class="alert alert-info alert-dismissible" role="alert" style="margin-top:10px;">' +
+                       '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                       '<h4><i class="fa fa-star"></i> Best Value for You!</h4>' +
+                       '<p><strong>' + courseName + '</strong> is included in the following package deals — ' +
+                       'you could save money by booking a package instead:</p>' +
+                       '<ul class="list-unstyled">';
+            $.each(packages, function (i, pkg) {
+                // Strip course list in parentheses from name for cleaner display
+                var displayName = pkg.name.replace(/\(.*?\)/g, '').trim();
+                html += '<li style="margin-bottom:6px;">' +
+                        '<strong>' + displayName + '</strong> &mdash; <strong>&pound;' + pkg.price + '</strong> &nbsp;' +
+                        '<a href="' + pkg.book_url + '" class="btn btn-success btn-xs">' +
+                        '<i class="fa fa-shopping-cart"></i> Book Package</a>' +
+                        '</li>';
+            });
+            html += '</ul></div>';
+            $('#package-suggestion').html(html);
+        }
+    });
+}
+
 function get_course_date() {
     $("#imp-message").hide();
     var randomid = Math.floor((Math.random() * 100) + 1);
     var courseselected = $('#courses').val();
     var venueselected = $('#venue').val();
+    console.log(courseselected, venueselected, "get_course_date");
+
+    // Show/clear package suggestion whenever course changes
+    showPackageSuggestion(courseselected);
 
     if (courseselected == '' || venueselected == '') {
         return;
@@ -88,6 +131,7 @@ get_course_date();
 if ($("#selected_course_id").val() != "") {
     $('#courses').val($("#selected_course_id").val());
     $('#venue').val("2");
+    showPackageSuggestion($("#selected_course_id").val());
     get_course_date();
 }
 

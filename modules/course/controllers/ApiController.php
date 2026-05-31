@@ -130,6 +130,73 @@ Class ApiController extends Controller
         echo $data['next_course_date'];
     }
 
+    /**
+     * Returns packages that contain a given linked_course_id as JSON.
+     * URL: /sync/api/getpackagesbycourse/course_id/{linked_course_id}
+     */
+    public function GetpackagesbycourseAction()
+    {
+        header('Content-Type: application/json');
+        $helper = new Helper();
+        $var    = $this->getGetVar();
+        $safe   = new SafeInput();
+        $storage = new Storage();
+        $db     = $helper->DatabaseConnection();
+
+        if (!isset($var['course_id'])) {
+            echo json_encode([]);
+            die();
+        }
+
+        $linked_course_id = (int) $safe->cleanFilter($var['course_id']);
+
+        // Resolve linked_course_id → local course_id
+        $courseModel   = new course($storage, $db);
+        $course_data   = $courseModel->getCourseDataByLinkedCourse($linked_course_id);
+
+        if (!is_array($course_data)) {
+            echo json_encode([]);
+            die();
+        }
+
+        $local_course_id = $course_data['course_id'];
+
+        // Find all package_course rows for this local course_id
+        $packageCourseModel = new package_course($storage, $db);
+        $packageModel       = new package($storage, $db);
+
+        // package_course stores the linked_course_id (external ID) in course_id column
+        // (populated by GetpackageAction from iSecureDirect API)
+        // So we query by the linked_course_id directly
+        $rows = $packageCourseModel->getPackageCourseDataPackageID(null); // fetch all, filter below
+
+        // Build result: find packages whose course list includes this linked_course_id
+        $result = [];
+        $allPackages = $packageModel->getAllPackageData();
+        if (is_array($allPackages)) {
+            foreach ($allPackages as $pkg) {
+                $pkg_courses = $packageCourseModel->getPackageCourseDataPackageID($pkg['package_id']);
+                if (!is_array($pkg_courses)) {
+                    continue;
+                }
+                foreach ($pkg_courses as $pc) {
+                    if ((int)$pc['course_id'] === $linked_course_id) {
+                        $result[] = [
+                            'package_id' => $pkg['package_id'],
+                            'name'       => $pkg['name'],
+                            'price'      => $pkg['price'],
+                            'book_url'   => '/DeanTraining/package-booking/index/package/' . $pkg['package_id'],
+                        ];
+                        break;
+                    }
+                }
+            }
+        }
+
+        echo json_encode($result);
+        die();
+    }
+
     public function traffic_marshalAction()
     {
         header('Access-Control-Allow-Origin: http://trainfortrafficmarshal.com');
