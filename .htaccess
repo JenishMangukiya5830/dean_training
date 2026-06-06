@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /DeanTraining/
+RewriteBase /DeanTraining/DeanTraining/
 RewriteRule ^$  public/ [L]
 RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

@@ -1,7 +1,7 @@
 Rlimitmem max 
 RewriteEngine On
 <IfModule mod_rewrite.c>
-RewriteBase /DeanTraining/public/
+RewriteBase /DeanTraining/DeanTraining/public/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
