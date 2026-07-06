@@ -14,43 +14,6 @@ echo $navbar;
 echo $titlebar;
 ?>
 
-<!-- Non-Refundable Payment Notice Modal -->
-<div class="modal fade" id="nonRefundableModal" tabindex="-1" role="dialog"
-     aria-labelledby="nonRefundableModalLabel" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color:#d9534f; color:#fff;">
-                <h4 class="modal-title" id="nonRefundableModalLabel">
-                    <i class="fa fa-exclamation-triangle"></i> Important Payment Notice
-                </h4>
-            </div>
-            <div class="modal-body">
-                <p style="font-size:16px;">
-                    <strong>Please be aware:</strong> All payments made for course bookings are
-                    <strong>non-refundable</strong>.
-                </p>
-                <p>
-                    Once your booking is confirmed and payment is processed, we are unable to issue
-                    refunds. Please ensure you have selected the correct course, date, and venue
-                    before proceeding.
-                </p>
-                <p>
-                    By clicking <strong>"I Understand, Continue"</strong> you acknowledge that you
-                    have read and agree to our
-                    <a href="/terms/" target="_blank">Terms &amp; Conditions</a> and understand
-                    that this payment is non-refundable.
-                </p>
-            </div>
-            <div class="modal-footer">
-                <a href="/" class="btn btn-default">Cancel</a>
-                <button type="button" class="btn btn-danger btn-lg" id="nonRefundableConfirm">
-                    <i class="fa fa-check"></i> I Understand, Continue
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <input type="hidden" id="promotionStatus"
@@ -189,9 +152,19 @@ echo $titlebar;
                     </div>
                 </div>
 
+                <div class="form-group" style="margin-top:20px;">
+                    <div class="checkbox">
+                        <label id="tc-label">
+                            <input type="checkbox" id="agreeTerms" name="agreeTerms" value="1" data-validation="required" data-validation-error-msg="You must agree to the Terms &amp; Conditions to proceed." />
+                            I agree to the <a href="/terms/" target="_blank">Terms &amp; Conditions</a> <span class="text-danger">*</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="text-center" id="submitButton">
-                    <button type="submit" class="btn btn-success btn-lg" data-loading-text="Loading..."/>
-                    <i class="fa fa fa-money"></i> BOOK NOW</button>
+                    <button type="submit" class="btn btn-success btn-lg" data-loading-text="Loading...">
+                        <i class="fa fa fa-money"></i> BOOK NOW
+                    </button>
                 </div>
 
                 <br/>
@@ -225,4 +198,6 @@ echo $titlebar;
 <?php
 echo $footer;
 ?>
+
+
 

@@ -148,9 +148,11 @@ $('#bookingForm').submit(function (e) {
 
     if (!$(this).isValid()) {
         return false;
-    } else {
-        $('#submitButton').hide();
     }
+
+    // T&C checkbox — handled by data-validation="required" on the input
+
+    $('#submitButton').hide();
 
     try {
         var paymentType = $("input[name='ptype']:checked")[0].id;
