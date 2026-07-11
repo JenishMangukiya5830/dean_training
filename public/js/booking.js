@@ -63,8 +63,8 @@ function get_course_date() {
             .addClass('alert-danger')
             .html(
                 "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
-                "You must hold a valid <strong>First Aid at Work (FAW)</strong> or " +
-                "<strong>Emergency First Aid at Work (EFA)</strong> qualification before attending this security course."
+                "You must hold a valid <strong>FAW (First Aid at Work)</strong> or " +
+                "<strong>EFA (Emergency First Aid at Work)</strong> qualification, obtained within the last 6 months, before attending this security course."
             )
             .slideDown();
     }

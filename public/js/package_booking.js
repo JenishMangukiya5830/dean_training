@@ -36,8 +36,8 @@ function get_course_date() {
                     .html(
                         "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
                         "This package includes a security course (DS / DSR / CP / CPR). You must hold a valid " +
-                        "<strong>First Aid at Work (FAW)</strong> or <strong>Emergency First Aid at Work (EFA)</strong> " +
-                        "qualification before attending."
+                        "<strong>FAW (First Aid at Work)</strong> or <strong>EFA (Emergency First Aid at Work)</strong> " +
+                        "qualification, obtained within the last 6 months, before attending."
                     )
                     .slideDown();
             }
