@@ -13,7 +13,7 @@ function showPackageSuggestion(courseId) {
     );
     $.ajax({
         type: 'GET',
-        url: '/DeanTraining/sync/getpackagesbycourse/course_id/' + courseId,
+        url: '/DeanTraining/DeanTraining/sync/getpackagesbycourse/course_id/' + courseId,
         dataType: 'json',
         success: function (packages) {
             $('#package-suggestion').empty();
@@ -44,6 +44,7 @@ function showPackageSuggestion(courseId) {
 
 function get_course_date() {
     $("#imp-message").hide();
+    $('#dob-age-error').remove();
     var randomid = Math.floor((Math.random() * 100) + 1);
     var courseselected = $('#courses').val();
     var venueselected = $('#venue').val();
@@ -85,10 +86,20 @@ function get_course_date() {
             $("#datesfoundbooking").html("<div class='form-group'><label for='course" + randomid + "'>Please select date for <span id='name" + randomid + "'>Loading...</span> <span class='text-danger'>*</span></label><div class='input-group'><span class='input-group-addon'><i class='fa fa-calendar'></i></span><select name='dates' id='course" + randomid + "' class='form-control' data-validation='required'></select></div></div>");
             $(data.dates).each(function () {
                 var option = $('<option />');
-                option.attr('value', this.value).text(this.label);
+                // Parse start date from label "dd/mm/yyyy - dd/mm/yyyy"
+                var startDate = this.start_date || (this.label ? this.label.split(' - ')[0].trim() : '');
+                option.attr('value', this.value)
+                      .attr('data-start', startDate)
+                      .text(this.label);
                 $('#course' + randomid).append(option);
             });
             $("#name" + randomid).html($('#courses option:selected').text());
+
+            // Re-check age whenever the date dropdown changes (DOB may already be filled)
+            $('#course' + randomid).on('change', function () {
+                checkAgeOnDobChange();
+            });
+
             if ($('#course' + randomid + ' option').length == 0) {
                 $("#datesfoundbooking").html("<div class='row text-danger text-center'>No dates found for the selected course, please select any other course</div>");
                 $('#courses').val("");
@@ -123,6 +134,9 @@ function get_course_date() {
                 $('#courses').val($("#selected_course_id").val());
                 $('.selectpicker').selectpicker('render');
             }
+
+            // Re-check age now that new dates are loaded (DOB may already be filled)
+            checkAgeOnDobChange();
         }
     });
 }
@@ -135,13 +149,59 @@ if ($("#selected_course_id").val() != "") {
     get_course_date();
 }
 
+// Shared age check utility — returns true if the learner will be under 18 on courseStartStr (dd/mm/yyyy)
+function isUnder18OnCourseDate(dobStr, courseStartStr) {
+    if (!dobStr || !courseStartStr) { return false; }
+    var dp = dobStr.trim().split('/');
+    var sp = courseStartStr.trim().split('/');
+    if (dp.length < 3 || sp.length < 3) { return false; }
+    var dobObj    = new Date(parseInt(dp[2]), parseInt(dp[1]) - 1, parseInt(dp[0]));
+    var courseObj = new Date(parseInt(sp[2]), parseInt(sp[1]) - 1, parseInt(sp[0]));
+    var age = courseObj.getFullYear() - dobObj.getFullYear();
+    var m   = courseObj.getMonth() - dobObj.getMonth();
+    if (m < 0 || (m === 0 && courseObj.getDate() < dobObj.getDate())) { age--; }
+    return age < 18;
+}
+
+function checkAgeOnDobChange() {
+    var ageRestrictedCourses = ['6', '64', '29', '65', '10'];
+    var courseId = $('#courses').val();
+
+    // Remove any existing age error first
+    $('#dob-age-error').remove();
+
+    if (ageRestrictedCourses.indexOf(courseId) === -1) { return; }
+
+    var dob       = $('#dob').val();
+    var $selected = $('select[name="dates"] option:selected');
+    var startDate = $selected.attr('data-start');
+
+    if (!dob) { return; }
+
+    if (isUnder18OnCourseDate(dob, startDate || '')) {
+        $('#dob').closest('.form-group').after(
+            '<p id="dob-age-error" class="text-danger" style="margin-top:5px;">' +
+            '<i class="fa fa-exclamation-triangle"></i> ' +
+            'You must be at least 18 years old on the course start date to enrol on this course.' +
+            '</p>'
+        );
+    }
+}
+
 jQuery("#dob").datepicker({
     changeMonth: true,
     changeYear: true,
     dateFormat: "dd/mm/yy",
     yearRange: "-100:+0",
-    maxDate: "-18Y",
-    firstDay: 1
+    firstDay: 1,
+    onSelect: function () {
+        checkAgeOnDobChange();
+    }
+});
+
+// Fire age check when DOB is edited manually (blur = tab/click away, input = live typing)
+$('#dob').on('blur input', function () {
+    checkAgeOnDobChange();
 });
 
 $('#bookingForm').submit(function (e) {
@@ -150,7 +210,25 @@ $('#bookingForm').submit(function (e) {
         return false;
     }
 
-    // T&C checkbox — handled by data-validation="required" on the input
+    // Age check for restricted courses
+    var ageRestrictedCourses = ['6', '64', '29', '65', '10'];
+    var courseId = $('#courses').val();
+    if (ageRestrictedCourses.indexOf(courseId) !== -1) {
+        var dob       = $('#dob').val();
+        var $selected = $('select[name="dates"] option:selected');
+        var startDate = $selected.attr('data-start');
+        if (isUnder18OnCourseDate(dob, startDate || '')) {
+            $('#dob-age-error').remove();
+            $('#dob').closest('.form-group').after(
+                '<p id="dob-age-error" class="text-danger" style="margin-top:5px;">' +
+                '<i class="fa fa-exclamation-triangle"></i> ' +
+                'You must be at least 18 years old on the course start date to enrol on this course.' +
+                '</p>'
+            );
+            $('#dob').closest('.form-group')[0].scrollIntoView({ behavior: 'smooth' });
+            return false;
+        }
+    }
 
     $('#submitButton').hide();
 
