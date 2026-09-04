@@ -6,7 +6,7 @@ function get_course_date() {
     var packageselected = $('#package').val();
     var venueselected = $('#venue').val();
     $("#datesfoundbooking").html("");
-    $("#pkg-imp-message").hide();
+    // $("#pkg-imp-message").hide();
 
     if (packageselected == '' || venueselected == '') {
         return;
@@ -31,16 +31,16 @@ function get_course_date() {
                 }
             });
 
-            if (hasSecurityCourse) {
-                $("#pkg-imp-message")
-                    .html(
-                        "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
-                        "This package includes a security course (DS / DSR / CP / CPR). You must hold a valid " +
-                        "<strong>FAW (First Aid at Work)</strong> or <strong>EFA (Emergency First Aid at Work)</strong> " +
-                        "qualification, obtained within the last 6 months, before attending."
-                    )
-                    .slideDown();
-            }
+            // if (hasSecurityCourse) {
+            //     $("#pkg-imp-message")
+            //         .html(
+            //             "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
+            //             "This package includes a security course (DS / DSR / CP / CPR). You must hold a valid " +
+            //             "<strong>FAW (First Aid at Work)</strong> or <strong>EFA (Emergency First Aid at Work)</strong> " +
+            //             "qualification, obtained within the last 6 months, before attending."
+            //         )
+            //         .slideDown();
+            // }
 
             $.each(data.courses.dates, function (key, value) {
                 nameofdropdown = value.name;

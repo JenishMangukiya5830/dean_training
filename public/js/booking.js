@@ -1,7 +1,9 @@
 $("#imp-message").hide();
 
-// DS=6, DSR=64, CP=29, CPR=65 — require FAW/EFA qualification
-var securityCourseIds = ['6', '64', '29', '65'];
+// DS=6, DSR=64 require Level 3 Emergency First Aid at Work
+// CP=29, CPR=65 require Level 3 First Aid at Work
+var emergencyFirstAidCourseIds = ['6', '64', '22'];
+var firstAidAtWorkCourseIds = ['29', '65', '9'];
 
 function showPackageSuggestion(courseId) {
     $('#package-suggestion').empty();
@@ -57,15 +59,25 @@ function get_course_date() {
         return;
     }
 
-    // FAW/EFA prerequisite alert for security courses
-    if (securityCourseIds.indexOf(courseselected) !== -1) {
+    // First Aid prerequisite alert
+    if (emergencyFirstAidCourseIds.indexOf(courseselected) !== -1) {
         $("#imp-message")
             .removeClass('alert-warning')
             .addClass('alert-danger')
             .html(
-                "<i class='fa fa-exclamation-triangle'></i> <strong>FAW / EFA Qualification Required:</strong> " +
-                "You must hold a valid <strong>FAW (First Aid at Work)</strong> or " +
-                "<strong>EFA (Emergency First Aid at Work)</strong> qualification, obtained within the last 6 months, before attending this security course."
+                "<i class='fa fa-exclamation-triangle'></i> <strong>First Aid Qualification Required:</strong> " +
+                "You must hold a valid <strong>Level 3 Emergency First Aid at Work</strong> qualification (or higher). " +
+                "Your certificate must be provided before the course start date and have a minimum 12 months' validity remaining."
+            )
+            .slideDown();
+    } else if (firstAidAtWorkCourseIds.indexOf(courseselected) !== -1) {
+        $("#imp-message")
+            .removeClass('alert-warning')
+            .addClass('alert-danger')
+            .html(
+                "<i class='fa fa-exclamation-triangle'></i> <strong>First Aid Qualification Required:</strong> " +
+                "You must hold a valid <strong>Level 3 First Aid at Work</strong> qualification (or higher). " +
+                "Your certificate must be provided before the course start date and have a minimum 12 months' validity remaining."
             )
             .slideDown();
     }
@@ -102,7 +114,7 @@ function get_course_date() {
 
             if ($('#course' + randomid + ' option').length == 0) {
                 $("#datesfoundbooking").html("<div class='row text-danger text-center'>No dates found for the selected course, please select any other course</div>");
-                $('#courses').val("");
+                // $('#courses').val("");
                 $('.selectpicker').selectpicker('render');
 
             } else {
